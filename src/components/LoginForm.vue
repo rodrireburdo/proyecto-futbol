@@ -17,6 +17,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // Llamado correcto fuera de la función
+import AuthService from '@/services/AuthService';
 
 const dni = ref('');
 const password = ref('');
@@ -26,7 +27,9 @@ const errorPassword = ref(false);
 
 const router = useRouter(); // Declarado correctamente fuera de la función
 
-const access = () => {
+//const authService = new AuthService()
+
+const access = async () =>{
     // Resetear errores
     errorDni.value = false;
     errorPassword.value = false;
@@ -42,10 +45,13 @@ const access = () => {
     }
 
     // Si no hay errores, redirigir a la vista CoachHome
-    if (!errorDni.value && !errorPassword.value) {
+    if (await AuthService.logIn(dni.value.toString(), password.value)) {
         router.push({ name: 'coachHome' }); // Verifica que la ruta tenga este nombre
+    }else{
+        alert('DNI o contraseña incorrectos'); // Añadir un mensaje personalizado
     }
-};
+}
+
 </script>
 
 
