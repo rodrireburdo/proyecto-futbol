@@ -14,7 +14,9 @@ class AuthService {
                 console.log(response.data)
                 JwtService.setDni(response.data.id)
                 JwtService.setToken(response.data.token)
-                console.log(JwtService.getToken())
+                JwtService.setAuthority(response.data.userType)
+                if(response.data.userType == "STAFF") JwtService.setArea(response.data.area)
+                console.log(JwtService.getToken()) 
                 res = true;
             }else{
                 console.log("no dio")
@@ -26,6 +28,13 @@ class AuthService {
         }
 
         return res;
+    }
+
+    static isLogged() {
+        if(JwtService.getToken() == null) return false;
+        if(JwtService.getDni() == null) return false;
+        if(JwtService.getAuthority() == null) return false;
+        return true;
     }
 }
 

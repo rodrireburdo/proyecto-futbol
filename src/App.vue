@@ -1,6 +1,26 @@
 <template>
+  <div v-if="AuthService.isLogged()">
+    <NavBar />
     <router-view />
+  </div>
+  <div v-else>
+    <router-view />
+  </div>
 </template>
+
+<script setup>
+  import NavBar from './components/NavBar.vue';
+  import AuthService from '@/services/AuthService';
+  import JwtService from './services/JwtService';
+
+  import { onBeforeMount } from 'vue';
+
+  onBeforeMount(() => {
+    if(AuthService.isLogged()){
+      JwtService.logOut();
+    }
+  })
+</script>
 
 <style lang="scss">
   body {

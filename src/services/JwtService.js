@@ -3,6 +3,7 @@ class JwtService{
     static TOKEN_KEY = "AuthToken"
     static DNI_KEY = "AuthDni"
     static AUTHORITY_KEY = "AuthAuthority"
+    static AREA_KEY = "AuthRole"
 
     constructor(){
     }
@@ -34,7 +35,16 @@ class JwtService{
         return window.sessionStorage.getItem(this.AUTHORITY_KEY);
     }
 
-    logOut() {
+    static setArea(area) {
+        window.sessionStorage.removeItem(this.AREA_KEY);
+        window.sessionStorage.setItem(this.AREA_KEY, area);
+    }
+
+    static getArea() {
+        return window.sessionStorage.getItem(this.AREA_KEY);
+    }
+
+    static logOut() {
         window.sessionStorage.clear();
     }
 }
