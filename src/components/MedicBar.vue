@@ -7,7 +7,7 @@
             <router-link :to="{name: 'perfil'}" class="nav-link">Perfil </router-link>
         </li>
         <li class="nav-item">   
-            <router-link :to="{name: 'perfil'}" class="nav-link">Atender </router-link>
+            <router-link :to="{name: 'atender'}" class="nav-link">Atender </router-link>
         </li>
         <li class="nav-item">   
             <router-link :to="{name: 'perfil'}" class="nav-link">Turnos </router-link>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import JwtService from "./JwtService";
 import { ref } from "vue"
+import apiClient from "./ApiClient";
 
 class AuthService {
 
@@ -17,7 +18,7 @@ class AuthService {
                 JwtService.setDni(response.data.dni)
                 JwtService.setToken(response.data.token)
                 JwtService.setAuthority(response.data.userType)
-                JwtService.isLogg = true
+                this.isLogg.value = true
                 if(response.data.userType == "STAFF") JwtService.setArea(response.data.area)
                 res = true;
             }else{
@@ -44,6 +45,27 @@ class AuthService {
         if(JwtService.getAuthority() == null) log = false;
         this.isLogg.value = log;
         return log;
+    }
+
+    static async getPerfil() {
+
+        try{
+            const response = await apiClient.get(`players/perfil/${JwtService.getDni()}`);
+
+            if(response.status >= 200 && response.status < 300){
+                return response.data;
+            }else if(response.status == 403){
+                this.logOut();
+                return null
+            } else{
+                console.log("error al obtener perfil")
+                return null
+            }
+        }catch(error){
+            console.log("pinto error perfil")
+            return null;
+        }
+        
     }
 }
 

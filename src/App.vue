@@ -1,6 +1,5 @@
 <template>
   <NavBars v-if="isLogeed"/>
-  <h1 v-if="isLogeed">es logueado</h1>
   <router-view />
 </template>
 
