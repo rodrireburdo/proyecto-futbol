@@ -46,7 +46,7 @@ const access = async () =>{
 
     // Si no hay errores, redirigir a la vista CoachHome
     if (await AuthService.logIn(dni.value.toString(), password.value)) {
-        router.push({ name: 'coachHome' }); // Verifica que la ruta tenga este nombre
+        router.push({ name: 'perfil' }); // Verifica que la ruta tenga este nombre
     }else{
         alert('DNI o contraseña incorrectos'); // Añadir un mensaje personalizado
     }

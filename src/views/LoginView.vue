@@ -2,7 +2,16 @@
     <LoginForm />
 </template>
 <script setup>
-    import LoginForm from '@/components/LoginForm.vue';
+  import LoginForm from '@/components/LoginForm.vue';
+  import AuthService from '@/services/AuthService';
+
+  import { onBeforeMount } from 'vue';
+
+  onBeforeMount(() => {
+    if(AuthService.isLogg){
+      AuthService.logOut()
+    }
+  })
 </script>
 <style>
     body {

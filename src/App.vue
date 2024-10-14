@@ -1,25 +1,16 @@
 <template>
-  <div v-if="AuthService.isLogged()">
-    <NavBar />
-    <router-view />
-  </div>
-  <div v-else>
-    <router-view />
-  </div>
+  <NavBars v-if="isLogeed"/>
+  <h1 v-if="isLogeed">es logueado</h1>
+  <router-view />
 </template>
 
 <script setup>
-  import NavBar from './components/NavBar.vue';
-  import AuthService from '@/services/AuthService';
-  import JwtService from './services/JwtService';
+import NavBars from './components/NavBars.vue';
 
-  import { onBeforeMount } from 'vue';
+import { computed } from 'vue';
+import AuthService from './services/AuthService';
 
-  onBeforeMount(() => {
-    if(AuthService.isLogged()){
-      JwtService.logOut();
-    }
-  })
+const isLogeed = computed(() => AuthService.isLogg.value);
 </script>
 
 <style lang="scss">

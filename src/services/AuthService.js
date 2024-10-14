@@ -1,7 +1,10 @@
 import axios from "axios";
 import JwtService from "./JwtService";
+import { ref } from "vue"
 
 class AuthService {
+
+    static isLogg = ref(false)
     static async logIn(Dni, Password) {
         let credentials = {
             dni: Dni,
@@ -11,12 +14,11 @@ class AuthService {
         try{
             const response = await axios.post(`http://localhost:8080/auth/login`, credentials);
             if(response.status >= 200 && response.status < 300){
-                console.log(response.data)
-                JwtService.setDni(response.data.id)
+                JwtService.setDni(response.data.dni)
                 JwtService.setToken(response.data.token)
                 JwtService.setAuthority(response.data.userType)
+                JwtService.isLogg = true
                 if(response.data.userType == "STAFF") JwtService.setArea(response.data.area)
-                console.log(JwtService.getToken()) 
                 res = true;
             }else{
                 console.log("no dio")
@@ -30,11 +32,18 @@ class AuthService {
         return res;
     }
 
+    static logOut() {
+        JwtService.logOut()
+        this.isLogg.value = false
+    }
+
     static isLogged() {
-        if(JwtService.getToken() == null) return false;
-        if(JwtService.getDni() == null) return false;
-        if(JwtService.getAuthority() == null) return false;
-        return true;
+        let log = true
+        if(JwtService.getToken() == null) log = false;
+        if(JwtService.getDni() == null) log = false;
+        if(JwtService.getAuthority() == null) log = false;
+        this.isLogg.value = log;
+        return log;
     }
 }
 
