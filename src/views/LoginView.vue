@@ -8,7 +8,7 @@
   import { onBeforeMount } from 'vue';
 
   onBeforeMount(() => {
-    if(AuthService.isLogg){
+    if(AuthService.isLogged()){
       AuthService.logOut()
     }
   })

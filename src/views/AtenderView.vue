@@ -1,6 +1,6 @@
 <template>
     <div class="aten">
-        <div>
+        <div id="idInput">
             <h3>introduzca el dni del jugador</h3>
             <input type="number" id="miInput" v-model="jugador.dni" @input="handleInput">
         </div>
@@ -104,7 +104,7 @@ const loadStates = async () => {
 const fecha = (fechaJson) => {
     const fecha = new Date(fechaJson);
 
-    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric' };
+    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
     return fecha.toLocaleString('es-ES', opciones);
 }
 
@@ -117,6 +117,7 @@ const saveReport = async () => {
         if(response != null){
             report.value.comment = ""
             report.value.stateName = ""
+            jugador.value.dni = null
             clearPlayer()
         }
     }else{

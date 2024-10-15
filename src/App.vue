@@ -1,5 +1,5 @@
 <template>
-  <NavBars v-if="isLogeed"/>
+  <NavBars v-if="isLogged"/>
   <router-view />
 </template>
 
@@ -9,7 +9,7 @@ import NavBars from './components/NavBars.vue';
 import { computed } from 'vue';
 import AuthService from './services/AuthService';
 
-const isLogeed = computed(() => AuthService.isLogg.value);
+const isLogged = computed(() => AuthService.isLogg.value);
 </script>
 
 <style lang="scss">

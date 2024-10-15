@@ -3,7 +3,7 @@ import apiClient from "./ApiClient";
 class StateService {
     static async listStates() {
         try{
-            const response = await apiClient.get(`med/estados`);
+            const response = await apiClient.get(`players/estados`);
 
             if(response.status >= 200 && response.status < 300){
                 return response.data;
