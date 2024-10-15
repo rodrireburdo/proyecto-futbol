@@ -1,6 +1,16 @@
 <template>
-    <router-view />
+  <NavBars v-if="isLogged"/>
+  <router-view />
 </template>
+
+<script setup>
+import NavBars from './components/NavBars.vue';
+
+import { computed } from 'vue';
+import AuthService from './services/AuthService';
+
+const isLogged = computed(() => AuthService.isLogg.value);
+</script>
 
 <style lang="scss">
   body {
