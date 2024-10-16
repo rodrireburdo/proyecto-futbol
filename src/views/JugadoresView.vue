@@ -20,6 +20,9 @@
             <p>cargando categorias</p>
         </div>
         <div>
+            <div v-if="showDetail">
+                <PlayerDetails v-if="showDetail" :dni="jugador.dni" @player-found="onJugadorEncontrado" />
+            </div>
             <div v-if="jugadores.length > 0">
                 <table>
                     <thead>
@@ -35,7 +38,8 @@
                             <td v-if="jugador.estadoAct != null">{{ jugador.estadoAct.stateName }}</td>
                             <td v-else>sin estado</td>
                             <td v-if="jugador.estadoAct != null">{{ fecha(jugador.estadoAct.createdAt) }}</td>
-                            <td><button>detalle</button></td>
+                            <td v-else>sin estado</td>
+                            <td><button @click="detailPlayer(jugador.dni)">detalle</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -57,6 +61,7 @@ import { useRouter } from 'vue-router';
 import AuthService from '@/services/AuthService';
 import JwtService from '@/services/JwtService';
 import TecService from '@/services/TecService';
+import PlayerDetails from '@/components/PlayerDetails.vue';
 
 const router = useRouter();
 
@@ -66,6 +71,10 @@ let category = ref("")
 let timer = null
 let loadingC = ref(false)
 let loadingP = ref(false)
+let showDetail = ref(false)
+const jugador = ref({
+  dni: null
+})
 
 const getCategories = async () => {
     loadingC.value = true
@@ -82,6 +91,7 @@ const getJugadores = async (idCategory) => {
 }
 
 const handleCategory = async () => {
+    showDetail.value = false
     clearTimeout(timer);
     timer = setTimeout(() => {
         jugadores.value = []
@@ -94,6 +104,15 @@ const fecha = (fechaJson) => {
 
     const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
     return fecha.toLocaleString('es-ES', opciones);
+}
+
+const detailPlayer = (dni) => {
+    jugador.value.dni = dni
+    showDetail.value = true
+}
+
+const onJugadorEncontrado = (data) => {
+    showDetail.value = data
 }
 
 onBeforeMount(() => {

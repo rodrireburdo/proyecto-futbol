@@ -24,6 +24,8 @@
 <script setup>
     import { ref, watch, defineProps, defineEmits } from 'vue'
     import MedService from '@/services/MedService'
+
+    let timer = null
         
     const props = defineProps({
         dni: {
@@ -67,8 +69,6 @@
         const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' }
         return fecha.toLocaleString('es-ES', opciones)
     }
-
-    let timer = null
 
     watch(() => props.dni, (newDni) => {
         loading.value = true
