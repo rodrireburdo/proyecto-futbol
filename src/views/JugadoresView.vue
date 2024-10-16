@@ -8,11 +8,15 @@
                 </select>
             </div>
             <div v-if="category != ''">
-                <div >
-                    <p>estado</p>
+                <div v-if="jugadores.length > 0">
+                    <label for="stado">filtre por estado</label>
+                    <select id="stado" v-model="state">
+                        <option value="">Todos</option> 
+                        <option v-for="estado in states" :key="estado.stateName" :value="estado.stateName">{{ estado.stateName }}</option>
+                    </select>
                 </div>
                 <div>
-                    <p>por fecha</p>
+                    <p>filtre por fecha</p>
                 </div>
             </div>
         </div>
@@ -21,9 +25,11 @@
         </div>
         <div>
             <div v-if="showDetail">
+                <h3>Detalles del jugador</h3>
                 <PlayerDetails v-if="showDetail" :dni="jugador.dni" @player-found="onJugadorEncontrado" />
             </div>
             <div v-if="jugadores.length > 0">
+                <h3>lista de jugadores</h3>
                 <table>
                     <thead>
                         <tr>
@@ -33,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="jugador in jugadores" :key="jugador.dni">
+                        <tr v-for="jugador in filteredJugadores" :key="jugador.dni">
                             <td>{{ jugador.name }}</td>
                             <td v-if="jugador.estadoAct != null">{{ jugador.estadoAct.stateName }}</td>
                             <td v-else>sin estado</td>
@@ -55,19 +61,22 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 import AuthService from '@/services/AuthService';
 import JwtService from '@/services/JwtService';
 import TecService from '@/services/TecService';
 import PlayerDetails from '@/components/PlayerDetails.vue';
+import StateService from '@/services/StateService';
 
 const router = useRouter();
 
 let jugadores = ref([])
 let categories = ref([])
 let category = ref("")
+let states = ref([])
+let state = ref("")
 let timer = null
 let loadingC = ref(false)
 let loadingP = ref(false)
@@ -76,10 +85,37 @@ const jugador = ref({
   dni: null
 })
 
+const filteredJugadores = computed(() => {
+    return jugadores.value.filter(jugador => {
+        showDetail.value = false
+        // Filtro por estado
+        let matchState = state.value === "" || (jugador.estadoAct && jugador.estadoAct.stateName === state.value)
+
+        // Filtro por fecha
+        /*let matchDate = true
+        if (startDate.value && endDate.value && jugador.estadoAct) {
+            const createdAt = new Date(jugador.estadoAct.createdAt)
+            const start = new Date(startDate.value)
+            const end = new Date(endDate.value)
+            matchDate = createdAt >= start && createdAt <= end
+        }*/
+
+        return matchState 
+        //&& matchDate
+    })
+})
+
 const getCategories = async () => {
     loadingC.value = true
     const response = await TecService.getCategories()
     categories.value = response ?? []
+    loadingC.value = false
+}
+
+const getStates = async () => {
+    loadingC.value = true
+    const response = await StateService.listStates()
+    states.value = response ?? []
     loadingC.value = false
 }
 
@@ -95,8 +131,9 @@ const handleCategory = async () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
         jugadores.value = []
+        state.value = ""
         getJugadores(category.value);
-    }, 2000);
+    }, 500);
 }
 
 const fecha = (fechaJson) => {
@@ -120,6 +157,7 @@ onBeforeMount(() => {
         router.push({ name: 'login' })
     }
 
+    getStates()
     getCategories()
 })
 </script>
