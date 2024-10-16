@@ -23,9 +23,9 @@
                 <div class="filtros">
                     <div>
                         <label for="estado">Estado:</label>
-                        <select id="estado" v-model="filterState">
+                        <select id="estado" v-model="estado">
                             <option value="">todos</option>
-                            <option v-for="state in estados" :key="state.id" :value="state.id">{{ state.name }}</option>
+                            <option v-for="state in estados" :key="state.stateName" :value="state.stateName">{{ state.stateName }}</option>
                         </select>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="report in reportes" :key="report.createdAt">
+                        <tr v-for="report in filteredReports" :key="report.createdAt">
                             <td>{{ report.stateName }}</td>
                             <td>{{ report.comment }}</td>
                             <td>{{ fecha(report.createdAt) }}</td>
@@ -60,8 +60,9 @@
 </template>
 
 <script setup>
-    import { ref, watch, defineProps, defineEmits, onBeforeMount } from 'vue'
+    import { ref, watch, defineProps, defineEmits, onBeforeMount, computed } from 'vue'
     import MedService from '@/services/MedService'
+    import StateService from '@/services/StateService';
 
     let timer = null
         
@@ -84,6 +85,32 @@
         medicalReports: []
     })
     const reportes = ref([])
+    const estados = ref([])
+    const estado = ref("")
+
+    const getStates = async () => {
+        const response = await StateService.listStates()
+        estados.value = response ?? []
+    }
+
+    const filteredReports = computed(() => {
+        return reportes.value.filter(report => {
+            // Filtro por estado
+            let matchState = estado.value === "" || (report && report.stateName === estado.value)
+
+            // Filtro por fecha
+            /*let matchDate = true
+            if (startDate.value && endDate.value && jugador.estadoAct) {
+                const createdAt = new Date(jugador.estadoAct.createdAt)
+                const start = new Date(startDate.value)
+                const end = new Date(endDate.value)
+                matchDate = createdAt >= start && createdAt <= end
+            }*/
+
+            return matchState 
+            //&& matchDate
+        })
+    })
 
     const toggleInfo = () => {
         info.value =!info.value
@@ -118,6 +145,7 @@
         if(props.dni == null || props.dni.length > 5){
             loading.value = true
             searchPlayer()
+            getStates()
         }else{
             loading.value = false
         }
