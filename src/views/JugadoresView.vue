@@ -54,7 +54,7 @@
                             <td v-else>sin ingreso</td>
                             <td v-if="jugador.estadoAct != null">{{ jugador.estadoAct.stateName }}</td>
                             <td v-else>sin estado</td>
-                            <td v-if="jugador.estadoAct != null">{{ fecha(jugador.estadoAct.createdAt) }}</td>
+                            <td v-if="jugador.estadoAct != null">{{ fechaArg(jugador.estadoAct.createdAt) }}</td>
                             <td v-else>sin estado</td>
                             <td><button @click="detailPlayer(jugador.dni)">detalle</button></td>
                         </tr>
@@ -155,13 +155,6 @@ const handleCategory = async () => {
         state.value = ""
         getJugadores(category.value);
     }, 500);
-}
-
-const fecha = (fechaJson) => {
-    const fecha = new Date(fechaJson);
-
-    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
-    return fecha.toLocaleString('es-ES', opciones);
 }
 
 const fechaArg = (fechaJson) => {
