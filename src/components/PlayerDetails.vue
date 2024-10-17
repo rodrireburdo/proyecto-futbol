@@ -8,7 +8,7 @@
                 <div v-if="reportes.length > 0">
                     <p>estado: {{ reportes[0].stateName }}</p>
                     <p>comentario: {{ reportes[0].comment }}</p>
-                    <p>fecha: {{ fecha(reportes[0].createdAt) }}</p>
+                    <p>fecha: {{ fechaArg(reportes[0].createdAt) }}</p>
                     <p>medico: {{ reportes[0].medico }}</p>
                     <p>especialidad: {{ reportes[0].especialidad }}</p>
                 </div>
@@ -43,7 +43,7 @@
                         <tr v-for="report in filteredReports" :key="report.createdAt">
                             <td>{{ report.stateName }}</td>
                             <td>{{ report.comment }}</td>
-                            <td>{{ fecha(report.createdAt) }}</td>
+                            <td>{{ fechaArg(report.createdAt) }}</td>
                             <td>{{ report.medico }}</td>
                             <td>{{ report.especialidad }}</td>
                         </tr>
@@ -135,10 +135,11 @@
         loading.value = false
     }
     
-    const fecha = (fechaJson) => {
-        const fecha = new Date(fechaJson)
-        const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' }
-        return fecha.toLocaleString('es-ES', opciones)
+    const fechaArg = (fechaJson) => {
+        const fecha = new Date(fechaJson);
+
+        const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'America/Argentina/Buenos_Aires' };
+        return fecha.toLocaleString('es-ES', opciones);
     }
 
     onBeforeMount(() => {
