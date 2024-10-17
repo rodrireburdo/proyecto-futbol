@@ -16,6 +16,9 @@
             <router-link :to="{name: 'perfil'}" class="nav-link">Planificaciones </router-link>
         </li>
         <li class="nav-item">   
+            <router-link :to="{name: 'checkin'}" class="nav-link">Ingreso Jugadores </router-link>
+        </li>
+        <li class="nav-item">   
             <button @click="logOut">Cerrar Sesion</button>
         </li>
     </ul>

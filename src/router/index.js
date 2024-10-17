@@ -3,6 +3,7 @@ import LoginView from '@/views/LoginView.vue'
 import PerfilView from '@/views/PerfilView.vue'
 import AtenderView from '@/views/AtenderView.vue'
 import JugadoresView from '@/views/JugadoresView.vue'
+import CheckInView from '@/views/CheckInView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/jugadores',
     name: 'jugadores',
     component: JugadoresView
+  },
+  {
+    path: '/llegada',
+    name: 'checkin',
+    component: CheckInView
   }
 ]
 

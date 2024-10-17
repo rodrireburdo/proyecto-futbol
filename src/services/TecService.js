@@ -47,6 +47,29 @@ class TecService {
             return null;
         }
     }
+
+    static async checkInPlayer(dni) {
+        try{
+            const response = await apiClient.put(`tec/checkin?dni=${dni}`);
+
+            if(response.status >= 200 && response.status < 300){
+                return response.data;
+            }else if(response.status == 403){
+                console.log("no tiene permisos")
+                this.logOut();
+                return null
+            } else if(response.status == 400){
+                console.log("dni incorrecto")
+                return null
+            } else{
+                console.log("error al actualizar el usuario")
+                return null
+            }
+        }catch(error){
+            console.log("pinto error atender")
+            return null;
+        }
+    }
 } 
 
 export default TecService;
