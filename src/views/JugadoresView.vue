@@ -16,7 +16,12 @@
                     </select>
                 </div>
                 <div>
-                    <p>filtre por fecha</p>
+                    <p>Filtre por fecha y hora de último ingreso</p>
+                    <label for="startDate">Desde:</label>
+                    <input type="datetime-local" id="startDate" v-model="startDate" @change="handleCategory">
+                    
+                    <label for="endDate">Hasta:</label>
+                    <input type="datetime-local" id="endDate" v-model="endDate" @change="handleCategory">
                 </div>
             </div>
         </div>
@@ -29,18 +34,24 @@
                 <PlayerDetails v-if="showDetail" :dni="jugador.dni" @player-found="onJugadorEncontrado" />
             </div>
             <div v-if="jugadores.length > 0">
-                <h3>lista de jugadores</h3>
+                <div>
+                    <h3>lista de jugadores</h3>
+                    <button @click="handleCategory">actualizar</button>
+                </div>
                 <table>
                     <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Ultimo ingreso</th>
                             <th>Estado</th>
-                            <th>Fecha</th>
+                            <th>Fecha revision</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="jugador in filteredJugadores" :key="jugador.dni">
                             <td>{{ jugador.name }}</td>
+                            <td v-if="jugador.lastCheckIn != null">{{ fechaArg(jugador.lastCheckIn) }}</td>
+                            <td v-else>sin ingreso</td>
                             <td v-if="jugador.estadoAct != null">{{ jugador.estadoAct.stateName }}</td>
                             <td v-else>sin estado</td>
                             <td v-if="jugador.estadoAct != null">{{ fecha(jugador.estadoAct.createdAt) }}</td>
@@ -81,6 +92,8 @@ let timer = null
 let loadingC = ref(false)
 let loadingP = ref(false)
 let showDetail = ref(false)
+let startDate = ref("")
+let endDate = ref("")
 const jugador = ref({
   dni: null
 })
@@ -100,7 +113,15 @@ const filteredJugadores = computed(() => {
             matchDate = createdAt >= start && createdAt <= end
         }*/
 
-        return matchState 
+        let matchCheckIn = true
+        if (startDate.value && endDate.value && jugador.lastCheckIn) {
+            const checkInDate = new Date(jugador.lastCheckIn)
+            const start = new Date(startDate.value)
+            const end = new Date(endDate.value)
+            matchCheckIn = checkInDate >= start && checkInDate <= end
+        }
+
+        return matchState && matchCheckIn
         //&& matchDate
     })
 })
@@ -140,6 +161,13 @@ const fecha = (fechaJson) => {
     const fecha = new Date(fechaJson);
 
     const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC' };
+    return fecha.toLocaleString('es-ES', opciones);
+}
+
+const fechaArg = (fechaJson) => {
+    const fecha = new Date(fechaJson);
+
+    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'America/Argentina/Buenos_Aires' };
     return fecha.toLocaleString('es-ES', opciones);
 }
 
