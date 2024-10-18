@@ -5,7 +5,7 @@ import { ref, watch } from "vue"
 let token = ref(JwtService.getToken());
 
 const apiClient = axios.create({
-    baseURL: 'https://playerpass-p.up.railway.app/' //hacer archivo env
+    baseURL: 'https://playerpass-p.up.railway.app/'
 });
 
 apiClient.interceptors.request.use(config => {
