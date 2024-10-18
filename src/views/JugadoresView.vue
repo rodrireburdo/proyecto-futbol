@@ -36,7 +36,7 @@
             <div v-if="jugadores.length > 0">
                 <div>
                     <h3>lista de jugadores</h3>
-                    <button @click="handleCategory">actualizar</button>
+                    <button @click="handleCategory">Actualizar</button>
                 </div>
                 <table>
                     <thead>
@@ -56,7 +56,7 @@
                             <td v-else>sin estado</td>
                             <td v-if="jugador.estadoAct != null">{{ fechaArg(jugador.estadoAct.createdAt) }}</td>
                             <td v-else>sin estado</td>
-                            <td><button @click="detailPlayer(jugador.dni)">detalle</button></td>
+                            <td><button @click="detailPlayer(jugador.dni)">Detalle</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -95,7 +95,7 @@ let showDetail = ref(false)
 let startDate = ref("")
 let endDate = ref("")
 const jugador = ref({
-  dni: null
+dni: null
 })
 
 const filteredJugadores = computed(() => {
@@ -187,4 +187,112 @@ onBeforeMount(() => {
     .jugadores {
         background-color: beige;
     }
+</style>
+
+<style scoped lang="scss">
+.jugadores {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+
+    .filtros {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        div {
+            margin-bottom: 15px;
+
+            label {
+                font-weight: bold;
+                margin-right: 10px;
+            }
+
+            select, input {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 1rem;
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+
+        thead {
+            background-color: #007bff;
+            color: white;
+
+            th {
+                padding: 12px;
+                text-align: left;
+                font-weight: normal;
+            }
+        }
+
+        tbody {
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+
+                button {
+                    padding: 6px 12px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #0056b3;
+                    }
+                }
+            }
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+    }
+
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    button {
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #218838;
+        }
+    }
+
+    p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+}
 </style>

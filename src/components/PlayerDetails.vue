@@ -51,7 +51,6 @@
                 </table>
             </div>
         </div>
-        
     </div>
     <div v-else>
         <h3 v-if="jugador.dni && loading">Cargando jugador...</h3>
@@ -167,9 +166,95 @@
     })
     
 </script>
-  
-<style scoped>
+
+<style scoped lang="scss">
+.historial {
+    background-color: #f8f9fa; // Fondo claro
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+    button {
+        background-color: #007bff; // Color azul para el botón
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #0056b3; // Cambia el color al hacer hover
+        }
+    }
+
+    h3, h4 {
+        margin: 10px 0;
+        color: #343a40; // Color oscuro para los títulos
+    }
+
     .datos {
         margin-top: 10px;
+
+        p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
     }
+
+    .filtros {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        label {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; // Filas alternas de distinto color
+        }
+
+        tr:hover {
+            background-color: #e9ecef; // Color al hacer hover
+        }
+    }
+}
+
+h3 {
+    color: #333;
+    font-size: 1.5rem;
+}
+
+h3, h4 {
+    margin: 20px 0;
+    text-align: center;
+}
 </style>
+

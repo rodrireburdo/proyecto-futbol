@@ -2,11 +2,11 @@
     <div v-if="!loading" class="perf">
         <h1>vista perfil </h1>
         <h3>Bienvenido, {{ perfil.name }}</h3>
-        <h3>email {{ perfil.email }}</h3>
+        <h3>Email {{ perfil.email }}</h3>
         <h3 v-if="JwtService.getAuthority() == 'STAFF'">{{ perfil.rol }}</h3>
     </div>
     <div v-else>
-        <h3>cargando informacion del perfil</h3>
+        <h3>Cargando informacion del perfil..</h3>
     </div>
 </template>
 
@@ -48,8 +48,35 @@ onBeforeMount(() => {
 })
 </script>
 
-<style scoped>
-    .perf {
-        background-color: aliceblue;
+<style scoped lang="scss">
+.perf {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        color: #333;
+        font-size: 2rem;
+        margin-bottom: 15px;
     }
+
+    h3 {
+        color: #555;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+
+        &:nth-child(3) {
+            font-weight: bold;
+        }
+    }
+}
+
+h3.loading {
+    color: #007bff;
+    text-align: center;
+    margin-top: 20px;
+}
 </style>
