@@ -1,6 +1,8 @@
 <template>
   <div class="layout">
-    <NavBars v-if="isLogged" class="navbar" />
+    <div v-if="isLogged" class="navbar">
+      <NavBars />
+    </div>
     <div class="content">
       <router-view />
     </div>
@@ -17,20 +19,20 @@ const isLogged = computed(() => AuthService.isLogg.value);
 
 <style lang="scss">
 .layout {
-  display: flex;
-  height: 100vh; 
-  width: 100vw;  
+  display: grid;
+  grid-template-columns: 250px 1fr; /* La primera columna es de 250px y la segunda ocupa el espacio restante */
+  height: auto;
+  width: 100vw;
+
 }
 
 .navbar {
-  width: 250px; 
   padding: 20px;
 }
 
 .content {
-  flex: 1; 
   padding: 20px;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 body {
@@ -42,5 +44,17 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+/* Para pantallas más pequeñas, ajusta el layout */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr; /* Colapsa a una columna */
+    grid-template-rows: auto 1fr; /* La navbar y luego el contenido */
+  }
+
+  .navbar {
+    width: 100%; /* Ajusta la barra de navegación a toda la pantalla */
+  }
 }
 </style>
