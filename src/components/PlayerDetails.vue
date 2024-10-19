@@ -264,7 +264,6 @@ watch(() => props.dni, (newDni) => {
 
     td {
         display: flex; // Usar flexbox para celdas
-        justify-content: space-between; // Separar contenido
         padding: 8px 0; // Espaciado vertical
         border-bottom: 1px solid #ddd; // Borde inferior
         font-size: 1rem; // Aumentar tamaño de fuente
