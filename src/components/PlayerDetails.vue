@@ -216,8 +216,8 @@ watch(() => props.dni, (newDni) => {
         margin-top: 10px;
 
         th, td {
-            padding: 0px; // Aumentar el padding
-            justify-content: left;
+            padding: 5px; // Aumentar el padding
+            text-align: left;
             border-bottom: 1px solid #ddd;
             font-size: 1rem; // Aumentar tamaño de fuente
             line-height: 1.5; // Aumentar espacio entre líneas
