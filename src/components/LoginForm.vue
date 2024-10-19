@@ -72,6 +72,7 @@ html, body {
 .div-login {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
     margin: 0;
     padding: 50px; 
