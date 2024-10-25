@@ -1,16 +1,16 @@
 <template>
     <div v-if="!loading && finded">
-        <div class="historial" v-if="info">
+        <div class="historial" v-if="info && !history">
             <button @click="toggleInfo" v-if="reportes.length > 0">Historial</button>
             <div class="datos">
                 <h3>{{ jugador.name }}</h3>
                 <h4>Contacto: {{ jugador.email }}</h4>
                 <div v-if="reportes.length > 0">
-                    <p>Estado: {{ reportes[0].stateName }}</p>
-                    <p>Comentario: {{ reportes[0].comment }}</p>
-                    <p>Fecha: {{ fechaArg(reportes[0].createdAt) }}</p>
-                    <p>Médico: {{ reportes[0].medico }}</p>
-                    <p>Especialidad: {{ reportes[0].especialidad }}</p>
+                    <p>Estado: {{ lastReport.stateName }}</p>
+                    <p>Comentario: {{ lastReport.comment }}</p>
+                    <p>Fecha: {{ fechaArg(lastReport.createdAt) }}</p>
+                    <p>Médico: {{ lastReport.medico }}</p>
+                    <p>Especialidad: {{ lastReport.especialidad }}</p>
                 </div>
                 <div v-else>
                     <p>El jugador no posee reportes médicos</p>
@@ -30,6 +30,11 @@
                                 {{ state.stateName }}
                             </option>
                         </select>
+                    </div>
+                    <div>
+                        <button @click="prevPage" :disabled="page === 0">Anterior</button>
+                        <button @click="nextPage" :disabled="page >= totalPages - 1">Siguiente</button>
+                        <p>Página {{ page + 1 }} de {{ totalPages }}</p>
                     </div>
                 </div>
                 <table class="responsive-table">
@@ -57,6 +62,7 @@
                 <p>No hay reportes disponibles.</p>
             </div>
         </div>
+        
     </div>
     <div v-else>
         <h3 v-if="jugador.dni && loading">Cargando jugador...</h3>
@@ -90,8 +96,14 @@ const jugador = ref({
     medicalReports: []
 })
 const reportes = ref([])
+const lastReport = ref({})
 const estados = ref([])
 const estado = ref("")
+const history = ref(false)
+
+const page = ref(0);
+const size = ref(5);
+const totalPages = ref(1);
 
 const getStates = async () => {
     const response = await StateService.listStates()
@@ -106,26 +118,43 @@ const filteredReports = computed(() => {
 })
 
 const toggleInfo = () => {
-    info.value = !info.value
+    info.value = history.value ? true : !info.value
+    history.value = !history.value
 }
 
 const searchPlayer = async () => {
-    info.value = true
-    loading.value = true
-    finded.value = false
-    const response = await MedService.searchPlayer(jugador.value.dni)
+    info.value = true;
+    loading.value = true;
+    finded.value = false;
+    const response = await MedService.searchPlayer(jugador.value.dni, page.value, size.value);
     if (response != null) {
-        jugador.value.name = response.name
-        jugador.value.email = response.email
-        jugador.value.medicalReports = response.medicalReports ?? []
-        reportes.value = jugador.value.medicalReports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        finded.value = true
-        emit('player-found', true)
+        jugador.value.name = response.player.name;
+        jugador.value.email = response.player.email;
+        jugador.value.medicalReports = response.player.medicalReports ?? [];
+        console.log("reportes: ", response.player.medicalReports);
+        reportes.value = jugador.value.medicalReports;
+        totalPages.value = response.totalPages;
+        finded.value = true;
+        emit('player-found', true);
     } else {
-        emit('player-found', false)
+        emit('player-found', false);
     }
-    loading.value = false
-}
+    loading.value = false;
+};
+
+const nextPage = () => {
+    if (page.value < totalPages.value - 1) {
+        page.value++;
+        searchPlayer();
+    }
+};
+
+const prevPage = () => {
+    if (page.value > 0) {
+        page.value--;
+        searchPlayer();
+    }
+};
 
 const fechaArg = (fechaJson) => {
     const fecha = new Date(fechaJson)
@@ -143,17 +172,27 @@ onBeforeMount(() => {
     }
 })
 
+let interval = null;
+
 watch(() => props.dni, (newDni) => {
     loading.value = true
-    if (newDni.length > 5) {
-        clearTimeout(timer)
+    if(newDni.length > 5) {
+        clearTimeout(timer);
         timer = setTimeout(() => {
             jugador.value.dni = props.dni
             if (props.dni) {
+                page.value = 0
                 searchPlayer()
+                interval = setInterval(() => {
+                    if(!loading.value){
+                        lastReport.value = reportes.value[0]
+                        clearInterval(interval);
+                    }
+                }, 500)
             }
-        }, 2000)
+        }, 2000);
     }
+        
 })
 </script>
 <style scoped lang="scss">
