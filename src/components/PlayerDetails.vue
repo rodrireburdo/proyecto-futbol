@@ -131,7 +131,9 @@ const searchPlayer = async () => {
         jugador.value.name = response.player.name;
         jugador.value.email = response.player.email;
         jugador.value.medicalReports = response.player.medicalReports ?? [];
-        console.log("reportes: ", response.player.medicalReports);
+
+        jugador.value.medicalReports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
         reportes.value = jugador.value.medicalReports;
         totalPages.value = response.totalPages;
         finded.value = true;
@@ -181,6 +183,7 @@ watch(() => props.dni, (newDni) => {
         timer = setTimeout(() => {
             jugador.value.dni = props.dni
             if (props.dni) {
+                history.value = false
                 page.value = 0
                 searchPlayer()
                 interval = setInterval(() => {
@@ -188,7 +191,7 @@ watch(() => props.dni, (newDni) => {
                         lastReport.value = reportes.value[0]
                         clearInterval(interval);
                     }
-                }, 500)
+                }, 100)
             }
         }, 2000);
     }
