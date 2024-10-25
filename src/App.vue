@@ -11,7 +11,6 @@
 
 <script setup>
 import NavBars from './components/NavBars.vue';
-
 import { computed } from 'vue';
 import AuthService from './services/AuthService';
 

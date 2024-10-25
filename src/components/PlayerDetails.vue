@@ -57,7 +57,6 @@
                 <p>No hay reportes disponibles.</p>
             </div>
         </div>
-        
     </div>
     <div v-else>
         <h3 v-if="jugador.dni && loading">Cargando jugador...</h3>

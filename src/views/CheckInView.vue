@@ -26,7 +26,7 @@ const loading = ref(false)
 const finded = ref(false)
 
 const jugador = ref({
-  dni: null
+dni: null
 })
 
 const handleInput = () => {
@@ -58,8 +58,39 @@ onUnmounted(() => {
 })
 </script>
 
-<style setup>
-    .check {
-        background-color: beige;
+<style scoped lang="scss">
+.check {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    h3 {
+        margin-bottom: 15px;
+        color: #333;
     }
+
+    #miInput {
+        width: 100%;
+        padding: 8px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .loading {
+        color: #007bff;
+    }
+
+    .error {
+        color: #e74c3c;
+    }
+
+    .success {
+        color: #2ecc71;
+    }
+}
 </style>

@@ -13,7 +13,7 @@ class AuthService {
         }
         let res = false;
         try{
-            const response = await axios.post(`http://localhost:8080/auth/login`, credentials);
+            const response = await axios.post(`https://playerpass-p.up.railway.app/auth/login`, credentials);
             if(response.status >= 200 && response.status < 300){
                 JwtService.setDni(response.data.dni)
                 JwtService.setToken(response.data.token)
