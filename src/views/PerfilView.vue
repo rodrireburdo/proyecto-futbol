@@ -1,6 +1,7 @@
 <template>
     <div v-if="!loading" class="perf">
-        <h1>vista perfil </h1>
+        <h1>Perfil</h1>
+        <img :src="fotoUrl" alt="Foto de perfil">
         <h3>Bienvenido, {{ perfil.name }}</h3>
         <h3>Email {{ perfil.email }}</h3>
         <h3 v-if="JwtService.getAuthority() == 'STAFF'">{{ perfil.rol }}</h3>
@@ -20,6 +21,8 @@ import JwtService from '@/services/JwtService';
 const loading = ref(false)
 const router = useRouter();
 
+const fotoUrl = ref('') 
+
 let perfil = ref({
     dni: "",
     name: "",
@@ -31,6 +34,7 @@ let perfil = ref({
 const getProfile = async () => {
     loading.value = true;
     const user = await AuthService.getPerfil();
+    fotoUrl.value = user.profilePhotoUrl
     perfil.value.dni = user.dni;
     perfil.value.name = user.name;
     perfil.value.email = user.email;

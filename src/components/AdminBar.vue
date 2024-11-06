@@ -25,7 +25,7 @@
                 <router-link :to="{ name: 'perfil' }" class="nav-link" @click="closeMenu">Areas </router-link>
             </li>
             <li class="nav-item">
-                <router-link :to="{ name: 'perfil' }" class="nav-link" @click="closeMenu">Personal </router-link>
+                <router-link :to="{ name: 'personal' }" class="nav-link" @click="closeMenu">Personal </router-link>
             </li>
             <li class="nav-item" @click="closeMenu">
                 <button @click="logOut">Cerrar Sesion</button>
