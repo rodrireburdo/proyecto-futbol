@@ -1,10 +1,9 @@
 <template>
     <div class="personal">
         <div>
-            <h3><button>crear nuevo usuario</button></h3>
-            <NewUser/>
+            <h3><button @click="crear">crear nuevo usuario</button></h3>
+            <NewUser v-if="crearUser"/>
         </div>
-
     </div>
 </template>
 
@@ -21,7 +20,12 @@ const router = useRouter();
 
 let loadingC = ref(false)
 let categories = ref([])
+let crearUser = ref(false)
 //let category = ref("")
+
+const crear = () => {
+    crearUser.value = !crearUser.value
+}
 
 const getAreas = async () => {
     loadingC.value = true
@@ -31,7 +35,7 @@ const getAreas = async () => {
 }
 
 onBeforeMount(() => {
-    if(!(AuthService.isLogged() && JwtService.getArea() != null)){
+    if(!(AuthService.isLogged() || JwtService.getAuthority() != 'ADMINISTRATOR')){
         router.push({ name: 'login' })
     }
 
