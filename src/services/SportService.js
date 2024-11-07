@@ -1,56 +1,11 @@
 import apiClient from "./ApiClient";
 //import JwtService from "./JwtService";
 
-class AdminService {
-    static async getAreas() {
+class SportService {
+
+    static async saveSport(sport) {
         try{
-            const response = await apiClient.get(`/admin/area/listar`);
-
-            if(response.status >= 200 && response.status < 300){
-                return response.data;
-            }else if(response.status == 403){
-                console.log("no tiene permisos")
-                this.logOut();
-                return null
-            } else if(response.status == 400){
-                console.log("error")
-                return null
-            } else{
-                console.log("error al obtener areas")
-                return null
-            }
-        }catch(error){
-            console.log("pinto error areas")
-            return null;
-        }
-    }
-
-    static async getRoles() {
-        try{
-            const response = await apiClient.get(`/admin/role/listar`);
-
-            if(response.status >= 200 && response.status < 300){
-                return response.data;
-            }else if(response.status == 403){
-                console.log("no tiene permisos")
-                this.logOut();
-                return null
-            } else if(response.status == 400){
-                console.log("error")
-                return null
-            } else{
-                console.log("error al obtener roles")
-                return null
-            }
-        }catch(error){
-            console.log("pinto error roles")
-            return null;
-        }
-    }
-
-    static async postUser(user) {
-        try{
-            const response = await apiClient.post(`/admin/user/crear`, user);
+            const response = await apiClient.post(`/admin/sport/crear`, sport);
 
             if(response.status >= 200 && response.status < 300){
                 return response;
@@ -71,9 +26,32 @@ class AdminService {
         }
     }
 
-    static async getUsers() {
+    static async getSports() {
         try{
-            const response = await apiClient.get(`/admin/user/listar`);
+            const response = await apiClient.get(`/admin/sport/listar`);
+
+            if(response.status >= 200 && response.status < 300){
+                return response.data;
+            }else if(response.status == 403){
+                console.log("no tiene permisos")
+                this.logOut();
+                return null
+            } else if(response.status == 400){
+                console.log("error")
+                return null
+            } else{
+                console.log("error al obtener usuarios")
+                return null
+            }
+        }catch(error){
+            console.log("pinto error usuarios")
+            return null;
+        }
+    }
+
+    static async editSport(sport) {
+        try{
+            const response = await apiClient.put(`/admin/sport/editar//${sport.idSport}`, sport.sportName);
 
             if(response.status >= 200 && response.status < 300){
                 return response.data;
@@ -95,4 +73,4 @@ class AdminService {
     }
 }
 
-export default AdminService;
+export default SportService;

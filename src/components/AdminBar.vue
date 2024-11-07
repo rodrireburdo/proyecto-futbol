@@ -19,10 +19,16 @@
                 <router-link :to="{ name: 'perfil' }" class="nav-link" @click="closeMenu">Perfil </router-link>
             </li>
             <li class="nav-item">
-                <router-link :to="{ name: 'perfil' }" class="nav-link" @click="closeMenu">Categorias </router-link>
+                <router-link :to="{ name: 'categories' }" class="nav-link" @click="closeMenu">Categorias </router-link>
             </li>
             <li class="nav-item">
-                <router-link :to="{ name: 'perfil' }" class="nav-link" @click="closeMenu">Areas </router-link>
+                <router-link :to="{ name: 'areas' }" class="nav-link" @click="closeMenu">Areas </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link :to="{ name: 'sports' }" class="nav-link" @click="closeMenu">Deportes </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link :to="{ name: 'roles' }" class="nav-link" @click="closeMenu">Roles </router-link>
             </li>
             <li class="nav-item">
                 <router-link :to="{ name: 'personal' }" class="nav-link" @click="closeMenu">Personal </router-link>
