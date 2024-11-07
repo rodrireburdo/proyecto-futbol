@@ -71,6 +71,37 @@ class AdminService {
         }
     }
 
+    static async updateUser(id, user) {
+        try{
+            let userE = {
+                name: user.name,
+                lastName: user.lastName,
+                email: user.email,
+                areaN: user.areaN,
+                rolN: user.rolN
+            }
+            console.log("usuariooo ", userE)
+            const response = await apiClient.put(`/admin/user/editar/${id}`, userE);
+
+            if(response.status >= 200 && response.status < 300){
+                return response;
+            }else if(response.status == 403){
+                console.log("no tiene permisos")
+                this.logOut();
+                return null
+            } else if(response.status == 400){
+                console.log("error")
+                return null
+            } else{
+                console.log("error al crear usuario")
+                return null
+            }
+        }catch(error){
+            console.log("pinto error usuario")
+            return null;
+        }
+    }
+
     static async getUsers() {
         try{
             const response = await apiClient.get(`/admin/user/listar`);
@@ -92,6 +123,27 @@ class AdminService {
             console.log("pinto error usuarios")
             return null;
         }
+    }
+
+    static async getPerfil(dni) {
+
+        try{
+            const response = await apiClient.get(`players/perfil/${dni}`);
+
+            if(response.status >= 200 && response.status < 300){
+                return response.data;
+            }else if(response.status == 403){
+                this.logOut();
+                return null
+            } else{
+                console.log("error al obtener perfil")
+                return null
+            }
+        }catch(error){
+            console.log("pinto error perfil")
+            return null;
+        }
+        
     }
 }
 

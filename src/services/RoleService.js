@@ -1,11 +1,15 @@
 import apiClient from "./ApiClient";
 //import JwtService from "./JwtService";
 
-class SportService {
+class RoleService {
 
-    static async saveSport(sport) {
+    static async saveRole(RoleN) {
         try{
-            const response = await apiClient.post(`/admin/sport/crear`, sport);
+            let Role = {
+                name: RoleN.roleName,
+                area: RoleN.area.nameArea
+            }
+            const response = await apiClient.post(`/admin/role/crear`, Role);
 
             if(response.status >= 200 && response.status < 300){
                 return response;
@@ -26,9 +30,9 @@ class SportService {
         }
     }
 
-    static async getSports() {
+    static async getRoles() {
         try{
-            const response = await apiClient.get(`/admin/sport/listar`);
+            const response = await apiClient.get(`/admin/role/listar`);
 
             if(response.status >= 200 && response.status < 300){
                 return response.data;
@@ -49,12 +53,13 @@ class SportService {
         }
     }
 
-    static async editSport(sportE) {
+    static async editRole(RoleE) {
         try{
-            let sport = {
-                sportName: sportE.sportName
+            let Role = {
+                name: RoleE.roleName,
+                area: RoleE.area.nameArea
             }
-            const response = await apiClient.put(`/admin/sport/editar/${sportE.idSport}`, sport);
+            const response = await apiClient.put(`/admin/role/editar/${RoleE.idRole}`, Role);
             
             if(response.status >= 200 && response.status < 300){
                 return response;
@@ -76,4 +81,4 @@ class SportService {
     }
 }
 
-export default SportService;
+export default RoleService;

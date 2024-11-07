@@ -21,18 +21,22 @@
         </div>
         <div>
             <table>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Deporte</th>
-                    <th>Actions</th>
-                </tr>
-                <tr v-for="category in categories" :key="category.idCategory">
-                    <td>{{ category.categoryName }}</td>
-                    <td>{{ category.sport }}</td>
-                    <td>
-                        <button @click="edit({...category})">Editar</button>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Deporte</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="category in categories" :key="category.idCategory">
+                        <td>{{ category.categoryName }}</td>
+                        <td>{{ category.sport }}</td>
+                        <td>
+                            <button @click="edit({...category})">Editar</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div v-if="editingC">
