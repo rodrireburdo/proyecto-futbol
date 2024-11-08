@@ -3,8 +3,16 @@
         <div class="historial" v-if="info && !history">
             <button @click="toggleInfo" v-if="reportes.length > 0">Historial</button>
             <div class="datos">
-                <h3>{{ jugador.name }}</h3>
-                <h4>Contacto: {{ jugador.email }}</h4>
+                <div id="perfil">
+                    <div class="image-container">
+                        <img :src="jugador.urlPhoto" alt="">
+                    </div>
+                    <div class="info">
+                        <h3>{{ jugador.name }}</h3>
+                        <h4>Contacto: {{ jugador.email }}</h4>
+                    </div>
+                </div>
+                
                 <div v-if="reportes.length > 0">
                     <p>Estado: {{ lastReport.stateName }}</p>
                     <p>Comentario: {{ lastReport.comment }}</p>
@@ -91,6 +99,7 @@ const finded = ref(false)
 const info = ref(true)
 const jugador = ref({
     dni: props.dni,
+    urlPhoto: "",
     name: "",
     email: "",
     medicalReports: []
@@ -100,6 +109,7 @@ const lastReport = ref({})
 const estados = ref([])
 const estado = ref("")
 const history = ref(false)
+const oldPlayer = ref("")
 
 const page = ref(0);
 const size = ref(5);
@@ -129,10 +139,17 @@ const searchPlayer = async () => {
     const response = await MedService.searchPlayer(jugador.value.dni, page.value, size.value);
     if (response != null) {
         jugador.value.name = response.player.name;
+        jugador.value.urlPhoto = response.player.profilePhotoUrl;
         jugador.value.email = response.player.email;
         jugador.value.medicalReports = response.player.medicalReports ?? [];
 
         jugador.value.medicalReports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        if(oldPlayer.value !== jugador.value.name) {
+            let reports = response.player.medicalReports ?? []
+            reports = reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            lastReport.value = reports[0] ?? {}
+        }
 
         reportes.value = jugador.value.medicalReports;
         totalPages.value = response.totalPages;
@@ -188,7 +205,7 @@ watch(() => props.dni, (newDni) => {
                 searchPlayer()
                 interval = setInterval(() => {
                     if(!loading.value){
-                        lastReport.value = reportes.value[0]
+                        oldPlayer.value = jugador.value.name
                         clearInterval(interval);
                     }
                 }, 100)
@@ -278,6 +295,19 @@ watch(() => props.dni, (newDni) => {
             background-color: #e9ecef; // Color al hacer hover
         }
     }
+}
+
+img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover; /* Asegura que la imagen llene el área circular sin distorsión */
+        display: block;
+        margin: 0 auto 20px; /* Centra la imagen y añade un margen inferior */
+}
+
+.image-container {
+    background-image: none !important;
 }
 
 /* Estilos para pantallas móviles */

@@ -76,6 +76,15 @@ onBeforeMount(() => {
             font-weight: bold;
         }
     }
+
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover; /* Asegura que la imagen llene el área circular sin distorsión */
+        display: block;
+        margin: 0 auto 20px; /* Centra la imagen y añade un margen inferior */
+    }
 }
 
 h3.loading {
