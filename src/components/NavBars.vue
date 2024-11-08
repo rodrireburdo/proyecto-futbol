@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="navs">
         <div v-if="userType == 'ADMINISTRATOR'">
             <AdminBar/>
         </div>
@@ -27,3 +27,13 @@ const userType = ref(JwtService.getAuthority())
 const area = ref(JwtService.getArea() ?? JwtService.getArea());
 
 </script>
+
+<style>
+
+.navs {
+    display: flex;
+    justify-content: space-between;
+    max-width: 250px;
+    padding: 10px;
+}
+</style>

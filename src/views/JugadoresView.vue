@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div v-else>
-                <p>Cargando categorías...</p>
+                <p v-if="categories.length === 0">Cargando categorías...</p>
             </div>
             <div v-if="showDetail">
                 <h3>Detalles del jugador</h3>

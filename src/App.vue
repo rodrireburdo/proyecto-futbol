@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <div v-if="isLogged" class="navbar">
+    <div v-if="isLogged && currentPage" class="navbar">
       <NavBars />
     </div>
     <div class="content">
@@ -12,15 +12,26 @@
 <script setup>
 import NavBars from './components/NavBars.vue';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import AuthService from './services/AuthService';
+
+
+const router = useRouter();
+
+const currentPage = computed(() => {
+  return router.currentRoute.value.name !== 'checkin'
+});
 
 const isLogged = computed(() => AuthService.isLogg.value);
 </script>
 
 <style lang="scss">
 .layout {
-  display: grid;
-  grid-template-columns: 250px 1fr; /* La primera columna es de 250px y la segunda ocupa el espacio restante */
+  display: flex;
+  //grid-template-columns: 250px 1fr; /* La primera columna es de 250px y la segunda ocupa el espacio restante */
+  
+  padding: 20px;
+  margin-inline: 10px;
   height: auto;
   width: 100vw;
 
